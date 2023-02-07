@@ -20,5 +20,14 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    @IBAction func touchUpPlayPauseButton(_ sender: UIButton) {
+        print("button tapped")
+    }
+    
+    @IBAction func sliderValuechanged(_ sender: UISlider) {
+        print("slider Value changed")
+    }
+    
 }
 
