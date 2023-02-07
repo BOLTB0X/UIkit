@@ -8,7 +8,10 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    // IBOutlet 프로퍼티 추가
+    @IBOutlet var playPauseButton: UIButton!
+    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var progressSlider: UISlider!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
