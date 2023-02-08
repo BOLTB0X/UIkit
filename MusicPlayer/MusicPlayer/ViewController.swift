@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import AVFoundation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AVAudioPlayerDelegate {
+    // 추가
+    var player: AVAudioPlayer!
+    var timer: Timer!
+    
     // IBOutlet 프로퍼티 추가
     @IBOutlet var playPauseButton: UIButton!
     @IBOutlet var timeLabel: UILabel!
