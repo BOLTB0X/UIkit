@@ -81,6 +81,8 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
         self.timer = nil
     }
     
+    // 오토 레이아웃
+    
     func addViewsWithCode() {
         self.addPlayPauseButton()
         self.addTimeLabel()
@@ -178,7 +180,8 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.initializePlayer() // 추가
+//        self.addViewsWithCode() // 오토레이아웃 추가
+        self.initializePlayer() // 뮤직플레이 초기화
     }
 
     override func didReceiveMemoryWarning() {
