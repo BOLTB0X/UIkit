@@ -10,6 +10,9 @@ import UIKit
 class ReminderListViewController: UICollectionViewController {
     // diffable 데이터 소스에 대한 유형 별칭을 추가, 유형 별칭은 보다 표현력이 뛰어난 이름으로 기존 유형을 참조하는 데 유용
     typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
+    // 비교 가능한 데이터 소스는 스냅샷으로 데이터 상태를 관리
+    // 스냅샷은 특정 시점의 데이터 상태를 나타내고 스냅샷을 사용하여 데이터를 표시하려면 스냅샷을 만들고 표시할 데이터 상태로 스냅샷을 채운 다음 사용자 인터페이스에서 스냅샷을 적용
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
     
     // DataSource를 암시적으로 래핑 해제하는 dataSource 속성을 추가
     var dataSource: DataSource!
@@ -38,6 +41,14 @@ class ReminderListViewController: UICollectionViewController {
             return collectionView.dequeueConfiguredReusableCell(
                            using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
+        // viewDidLoad()에서 새 스냅샷 변수 선언
+        var snapshot = Snapshot()
+        snapshot.appendSections([0])
+        // map(_:)은 스냅샷의 항목으로 채워지는 미리 알림 제목만 포함하는 새 배열을 반환
+        snapshot.appendItems(Reminder.sampleData.map { $0.title })
+        dataSource.apply(snapshot)
+        
+        collectionView.dataSource = dataSource
     }
     
     // 일단 return 값이 안되어 추가가 필요
