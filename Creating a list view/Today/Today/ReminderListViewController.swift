@@ -10,6 +10,18 @@ import UIKit
 class ReminderListViewController: UICollectionViewController {
     // diffable 데이터 소스에 대한 유형 별칭을 추가, 유형 별칭은 보다 표현력이 뛰어난 이름으로 기존 유형을 참조하는 데 유용
     typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
+    
+    
+//    func makeDataSource() -> DataSource {
+//        let reminderCellRegistration = self.reminderCellRegistration()
+//        return DataSource(collectionView: collectionView) {
+//            collectionView, indexPath, item -> UICollectionViewCell? in
+//            return collectionView.dequeueConfiguredReusableCell(
+//                using: reminderCellRegistration, for: indexPath, item: item)
+//        }
+//    }
+//
+//    lazy var dataSource = makeDataSource()
     // 비교 가능한 데이터 소스는 스냅샷으로 데이터 상태를 관리
     // 스냅샷은 특정 시점의 데이터 상태를 나타내고 스냅샷을 사용하여 데이터를 표시하려면 스냅샷을 만들고 표시할 데이터 상태로 스냅샷을 채운 다음 사용자 인터페이스에서 스냅샷을 적용
     typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
@@ -61,5 +73,7 @@ class ReminderListViewController: UICollectionViewController {
         // 목록 구성으로 새로운 컴포지션 레이아웃 반환
         return UICollectionViewCompositionalLayout.list(using: listConfiguration)
     }
+    
+    
 }
 
