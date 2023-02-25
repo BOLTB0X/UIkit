@@ -5,9 +5,6 @@
 import UIKit
 
 class ReminderListViewController: UICollectionViewController {
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
-
     var dataSource: DataSource!
 
     override func viewDidLoad() {
@@ -15,14 +12,11 @@ class ReminderListViewController: UICollectionViewController {
 
         let listLayout = listLayout()
         collectionView.collectionViewLayout = listLayout
-
-        let cellRegistration = UICollectionView.CellRegistration {
-            (cell: UICollectionViewListCell, indexPath: IndexPath, itemIdentifier: String) in
-            let reminder = Reminder.sampleData[indexPath.item]
-            var contentConfiguration = cell.defaultContentConfiguration()
-            contentConfiguration.text = reminder.title
-            cell.contentConfiguration = contentConfiguration
-        }
+        
+        // ReminderListViewController.swift에서 후행 클로저를 제거하고 새 함수를 핸들러 매개변수로 전달
+        // ReminderListViewController.swift에서 모든 데이터 소스 동작을 추출하면 보다 체계화된 Swift 파일이 생성
+        // 뷰 컨트롤러 동작은 한 파일에 있고 데이터 소스 동작은 다른 파일에 있음
+        let cellRegistration = UICollectionView.CellRegistration(handler: cellRegistrationHandler)
 
         dataSource = DataSource(collectionView: collectionView) {
             (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: String) in
