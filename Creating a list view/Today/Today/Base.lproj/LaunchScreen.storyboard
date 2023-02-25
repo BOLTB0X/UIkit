@@ -11,7 +11,7 @@
         <!--Collection View Controller-->
         <scene sceneID="P3i-FA-lIu">
             <objects>
-                <collectionViewController id="wYs-Fk-Phy" sceneMemberID="viewController">
+                <collectionViewController title="Collection View Controller" id="wYs-Fk-Phy" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="k6K-nn-b4T">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
