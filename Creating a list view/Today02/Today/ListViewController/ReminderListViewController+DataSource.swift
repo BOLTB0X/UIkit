@@ -30,5 +30,47 @@ extension ReminderListViewController {
         contentConfiguration.secondaryTextProperties.font = UIFont.preferredFont(
             forTextStyle: .caption1)
         cell.contentConfiguration = contentConfiguration
+        
+        // 셀 등록 처리기에서 새 단추 구성 메서드를 호출하여 미리 알림을 전달하고 결과를
+        // doneButtonConfiguration이라는 새 변수에 할당
+        var doneButtonConfiguration = doneButtonConfiguration(for: reminder)
+        // 완료 버튼 구성의 tintColor 속성에 .todayListCellDoneButtonTint를 할당
+        doneButtonConfiguration.tintColor = .todayListCellDoneButtonTint
+        // 셀 액세서리의 배열을 만들고 셀의 액세서리 속성에 할당
+        // 배열에는 완료 버튼 구성과 상시 공개 표시기를 사용하여 구성된 사용자 지정 보기가 포함
+        cell.accessories = [
+            .customView(configuration: doneButtonConfiguration), .disclosureIndicator(displayed: .always)
+        ]
+        
+        // .listGroupCell() 백그라운드 구성을 backgroundConfiguration이라는 변수에 할당
+        var backgroundConfiguration = UIBackgroundConfiguration.listGroupedCell()
+        // .todayListCellBackground 색상을 배경 구성의 backgroundColor 속성에 할당
+        backgroundConfiguration.backgroundColor = .todayListCellBackground
+        // 셀의 backgroundConfiguration 속성에 새 배경 구성을 할당
+        // 제공된 배경색 자산을 사용하면 기본 배경색에서 모양이 변경 x 다음 섹션에서 이 걸 수정한다함
+        cell.backgroundConfiguration = backgroundConfiguration
+    }
+    
+    // 미리 알림을 수락하고 CustomViewConfiguration을 반환하는 doneButtonConfiguration
+    private func doneButtonConfiguration(for reminder: Reminder)
+    -> UICellAccessory.CustomViewConfiguration
+    {
+        // 삼항 조건 연산자를 사용하여 "circle.fill" 또는 "circle"을 symbolName이라는 상수에 할당
+        let symbolName = reminder.isComplete ? "circle.fill" : "circle"
+        // .title1 텍스트 스타일을 사용하여 새 이미지 기호 구성을 만들고 그 결과를 symbolConfiguration이라는 상수에 할당
+        let symbolConfiguration = UIImage.SymbolConfiguration(textStyle: .title1)
+        // 기호 구성을 사용하여 새 이미지를 만들고 그 결과를 이미지라는 상수에 할당
+        let image = UIImage(systemName: symbolName, withConfiguration: symbolConfiguration)
+        // 새 버튼을 만들고 그 결과를 버튼이라는 상수에 할당
+        // 버튼이 미리 알림의 완료 상태를 시각적으로 나타내는 역할
+        let button = UIButton()
+        // 버튼의 .normal 상태에 대한 이미지를 할당
+        // 정상 상태일 때 하나의 이미지를 표시하고 강조 표시되었을 때 다른 이미지를 표시하도록 UIButton 객체를 구성 가능
+        button.setImage(image, for: .normal)
+        
+        // 버튼을 사용하여 사용자 지정 보기 구성을 만들고 결과를 반환
+        // 이 구성 이니셜라이저를 사용하면 셀의 콘텐츠 보기 외부에서 셀 액세서리가 셀의 선행 또는 후행 가장자리에 표시되는지 여부를 정의 가능
+        return UICellAccessory.CustomViewConfiguration(
+            customView: button, placement: .leading(displayed: .always))
     }
 }
