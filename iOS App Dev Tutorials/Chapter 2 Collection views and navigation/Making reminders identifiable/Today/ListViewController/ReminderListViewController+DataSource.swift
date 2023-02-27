@@ -5,12 +5,14 @@
 import UIKit
 
 extension ReminderListViewController {
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
+    // ReminderListViewController+DataSource.swift에서 데이터 소스의 항목 식별자 유형과 스냅샷 유형 별칭을 Reminder.ID로 변경
+    typealias DataSource = UICollectionViewDiffableDataSource<Int, Reminder.ID>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Reminder.ID>
 
     func cellRegistrationHandler(
         cell:
-            UICollectionViewListCell, indexPath: IndexPath, id: String
+        // cellRegistrationHandler 매개 변수 목록의 식별자 유형을 Reminder.ID로 변경
+        UICollectionViewListCell, indexPath: IndexPath, id: Reminder.ID
     ) {
         let reminder = Reminder.sampleData[indexPath.item]
         var contentConfiguration = cell.defaultContentConfiguration()

@@ -6,6 +6,9 @@ import UIKit
 
 class ReminderListViewController: UICollectionViewController {
     var dataSource: DataSource!
+    // 미리 알림 인스턴스 배열을 저장하는 미리 알림 속성을 추가
+    // 샘플 데이터로 어레이를 초기화
+    var reminders: [Reminder] = Reminder.sampleData
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +28,9 @@ class ReminderListViewController: UICollectionViewController {
 
         var snapshot = Snapshot()
         snapshot.appendSections([0])
-        snapshot.appendItems(Reminder.sampleData.map { $0.title })
+        // 미리 알림 배열을 사용하여 스냅샷을 구성
+        // 식별자 배열을 생성하려면 title 대신 id 속성에 매핑
+        snapshot.appendItems(reminders.map { $0.id })
         dataSource.apply(snapshot)
 
         collectionView.dataSource = dataSource
