@@ -26,12 +26,14 @@ class ReminderListViewController: UICollectionViewController {
                 using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
 
-        var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        // 미리 알림 배열을 사용하여 스냅샷을 구성
-        // 식별자 배열을 생성하려면 title 대신 id 속성에 매핑
-        snapshot.appendItems(reminders.map { $0.id })
-        dataSource.apply(snapshot)
+//        var snapshot = Snapshot()
+//        snapshot.appendSections([0])
+//        // 미리 알림 배열을 사용하여 스냅샷을 구성
+//        // 식별자 배열을 생성하려면 title 대신 id 속성에 매핑
+//        snapshot.appendItems(reminders.map { $0.id })
+//        dataSource.apply(snapshot)
+        // ReminderListViewController+DataSource.swift에서 completeReminder(withId:)의 updateSnapshot()을 호출
+        updateSnapshot()
 
         collectionView.dataSource = dataSource
     }

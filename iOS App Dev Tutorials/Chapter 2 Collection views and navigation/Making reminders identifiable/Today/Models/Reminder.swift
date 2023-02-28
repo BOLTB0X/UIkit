@@ -16,6 +16,21 @@ struct Reminder : Identifiable {
     var isComplete: Bool = false
 }
 
+// 추가
+// 또한 where 절을 사용하여 Array where Element == Reminder 확장과 같이 일반 유형을 조건부로 확장 가능
+extension [Reminder] {
+    // id 인수를 수락하고 Self.Index를 반환하는 indexOfReminder라는 함수
+    // Array.Index는 Int의 유형 별칭
+    func indexOfReminder(withId id: Reminder.ID) -> Self.Index {
+        // 식별자와 일치하는 요소의 첫 번째 인덱스를 index라는 상수에 할당
+        guard let index = firstIndex(where: { $0.id == id }) else {
+            fatalError()
+        }
+        // 매칭한 인덱스 반환
+        return index
+    }
+}
+
 #if DEBUG
 extension Reminder {
     static var sampleData = [
