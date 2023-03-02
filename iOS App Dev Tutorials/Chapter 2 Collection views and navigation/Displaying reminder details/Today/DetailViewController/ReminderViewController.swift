@@ -55,6 +55,13 @@ class ReminderViewController: UICollectionViewController {
             return collectionView.dequeueConfiguredReusableCell(
                 using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
+        // 앱이 iOS 16 이상에서 실행될 때 내비게이션 바의 스타일을 .navigator로 설정
+        // .navigator 스타일은 제목을 중앙에 가로로 배치하고 왼쪽에 뒤로 버튼을 포함
+        if #available(iOS 16, *) {
+                   navigationItem.style = .navigator
+               }
+        navigationItem.title = NSLocalizedString("Reminder", comment: "Reminder view controller title")
+
         updateSnapshot()
 
     }
