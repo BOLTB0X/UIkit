@@ -24,7 +24,3 @@
 
 > UIKit 앱의 일반적인 디자인 패턴인 MVC(Model-View-Controller) 디자인 패턴
 > <br/>
-
-## collectionView
-
-> 테이블처럼 일정한 가로 세로 개수를 가진 목록 Object
