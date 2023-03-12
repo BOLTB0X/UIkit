@@ -2,7 +2,7 @@
 
 ## Xcode 프로젝트 구조
 
-![](https://docs-assets.developer.apple.com/published/02d9fb638acb119ac0c701c0efab7c4c/SUI_010-005-intro~dark@2x.png){: width="200" height="200"}
+<img src="https://docs-assets.developer.apple.com/published/02d9fb638acb119ac0c701c0efab7c4c/SUI_010-005-intro~dark@2x.png" width="150" height="150"/>
 <br/>
 
 Source files, Configuration files, Build settings
@@ -10,7 +10,7 @@ Source files, Configuration files, Build settings
 
 ## Simulator
 
-![](https://docs-assets.developer.apple.com/published/f94247b91f218982a4fff04f3186aeca/UIK010_010-030~dark@2x.png){: width="200" height="200"}
+<img src="https://docs-assets.developer.apple.com/published/f94247b91f218982a4fff04f3186aeca/UIK010_010-030~dark@2x.png" width="150" height="150"/>
 <br/>
 시뮬레이터는 앱의 모양과 동작의 대부분의 측면을 테스트하기 위한 현실적인 환경
 <br/>
@@ -60,7 +60,7 @@ ViewController, Navigation Controller, TableView Controller, TabBar Controller, 
 
 ## Collection View controller: 일정한 가로 세로 개수를 가진 목록객체
 
-![](https://docs-assets.developer.apple.com/published/858ca5e2e2595be9b05487d9241ab531/UIK010_020-intro~dark@2x.png) {: width="200" height="200"}
+<img src="https://docs-assets.developer.apple.com/published/858ca5e2e2595be9b05487d9241ab531/UIK010_020-intro~dark@2x.png" width="150" height="150"/>
 <br/>
 이번 튜토리얼에 주로사용할 View controller
 <br/>
@@ -69,7 +69,7 @@ ViewController, Navigation Controller, TableView Controller, TabBar Controller, 
 
 ## 초기 View Controller 설정
 
-![](https://docs-assets.developer.apple.com/published/2999d25d71b74dfdc8757316efca0179/UIK010_020-050~dark@2x.png) {: width="200" height="200"}
+<img src="https://docs-assets.developer.apple.com/published/2999d25d71b74dfdc8757316efca0179/UIK010_020-050~dark@2x.png" width="150" height="150"/>
 <br/>
 Controller를 변경하면 속성 인스펙터에서 Is Initial View Controller 체크박스를 선택하여 장면을 스토리보드 진입점으로 설정
 <br/>
@@ -78,7 +78,7 @@ Controller를 변경하면 속성 인스펙터에서 Is Initial View Controller 
 
 ## MVC
 
-![](https://docs-assets.developer.apple.com/published/ba3a9d5e35b72a6ac9253078a162e091/UIK010_030-intro~dark@2x.png) {: width="200" height="200"}
+<img src="https://docs-assets.developer.apple.com/published/ba3a9d5e35b72a6ac9253078a162e091/UIK010_030-intro~dark@2x.png" width="150" height="150"/>
 <br/>
 
 > UIKit 앱의 일반적인 디자인 패턴인 MVC(Model-View-Controller) 디자인 패턴
