@@ -2,7 +2,7 @@
 
 ## Xcode 프로젝트 구조
 
-![](https://docs-assets.developer.apple.com/published/02d9fb638acb119ac0c701c0efab7c4c/SUI_010-005-intro~dark@2x.png) {: width="200" height="200"}
+![](https://docs-assets.developer.apple.com/published/02d9fb638acb119ac0c701c0efab7c4c/SUI_010-005-intro~dark@2x.png){: width="200" height="200"}
 <br/>
 
 Source files, Configuration files, Build settings
@@ -10,7 +10,7 @@ Source files, Configuration files, Build settings
 
 ## Simulator
 
-![](https://docs-assets.developer.apple.com/published/f94247b91f218982a4fff04f3186aeca/UIK010_010-030~dark@2x.png) {: width="200" height="200"}
+![](https://docs-assets.developer.apple.com/published/f94247b91f218982a4fff04f3186aeca/UIK010_010-030~dark@2x.png){: width="200" height="200"}
 <br/>
 시뮬레이터는 앱의 모양과 동작의 대부분의 측면을 테스트하기 위한 현실적인 환경
 <br/>
