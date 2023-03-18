@@ -62,12 +62,7 @@ Alamofire는 기존의 URL Session 기반으로 작동하며 URL Session 을 Wra
 - 완벽한 문서화
   <br/>
 
-### HTTP
-
-> 위에서 alamofire는 Swift 기반의 HTTP 네트워킹 라이브러리이므로 심플한 정리가 필요
-> <br/>
-
-[HTTP]() 정리
+[HTTP](https://github.com/BOLTB0X/UIkit/blob/main/Study/alamofire/HTTP.md) 정리
 <br/>
 
 - GET: 웹 페이지와 같은 데이터를 가져오지만 서버의 데이터는 변경 x
@@ -85,7 +80,7 @@ Alamofire는 기존의 URL Session 기반으로 작동하며 URL Session 을 Wra
 - DELETE: 제공된 특정 위치에서 데이터를 삭제
   <br/>
 
-cf. [JSON]() 정리
+cf. [JSON](https://github.com/BOLTB0X/UIkit/blob/main/Study/alamofire/JSON.md) 정리
 
 ### REST
 
@@ -126,3 +121,7 @@ cf. 메서드가 객체를 반환하게 되면, 메서드의 반환 값인 객�
 
 cf. ENDPOINT는 API가 서버에서 리소스에 접근할 수 있도록 가능하게 하는 URL
 <br/>
+
+## 튜토리얼 프로젝트
+
+https://github.com/BOLTB0X/UIkit/tree/main/self-taught%20graffiti/AlamofireTutorial
