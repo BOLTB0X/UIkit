@@ -34,7 +34,13 @@ cf. SwiftUI로 개발을 진행하다보면 markdown, rx 등과 같이 UIKit 형
 
 ### [study](https://github.com/BOLTB0X/UIkit/tree/main/Study)
 
+- [DesignPatternsonUIKit](https://github.com/BOLTB0X/UIkit/tree/main/Study/Tutorial)
+  <br/>
+
 - [UI 구조](https://github.com/BOLTB0X/UIkit/tree/main/Study/UI%20structure)
+  <br/>
+
+- [MVC]()
   <br/>
 
 - [alamofire 공부](https://github.com/BOLTB0X/UIkit/tree/main/Study/alamofire)
