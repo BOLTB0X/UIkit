@@ -1,6 +1,4 @@
-# UIkit
-
-## 독학용 레파토지
+# UIkit: UIKit학습을 위한 낙서장 같은 레파토지
 
 ## UIKit를 공부하게 된 계기
 
@@ -22,17 +20,23 @@ cf. SwiftUI로 개발을 진행하다보면 markdown, rx 등과 같이 UIKit 형
 즉 기본기를 갈고 닦는 "레파지토리"
 <br/>
 
----
+### Apple 공식문서
 
-### [iOS 공식 Tutorials 학습 레파지토리](https://github.com/BOLTB0X/UIkit/tree/main/iOS%20App%20Dev%20Tutorials)
-
-<br/>
-
-### [업무나 혼자서 적용해보았던 것들 정리 레파지토리](https://github.com/BOLTB0X/UIkit/tree/main/self-taught%20graffiti)
+[iOS 공식 Tutorials 학습 레파지토리](https://github.com/BOLTB0X/UIkit/tree/main/iOS%20App%20Dev%20Tutorials)
 
 <br/>
 
-### [study](https://github.com/BOLTB0X/UIkit/tree/main/Study)
+TODO
+<br/>
+
+### 이것 저것
+
+[적용해보았던 것들 정리 레파지토리](https://github.com/BOLTB0X/UIkit/tree/main/self-taught%20graffiti)
+
+TODO
+<br/>
+
+### study
 
 - [DesignPatternsonUIKit](https://github.com/BOLTB0X/UIkit/tree/main/Study/Tutorial)
   <br/>
@@ -40,7 +44,7 @@ cf. SwiftUI로 개발을 진행하다보면 markdown, rx 등과 같이 UIKit 형
 - [UI 구조](https://github.com/BOLTB0X/UIkit/tree/main/Study/UI%20structure)
   <br/>
 
-- [MVC]()
+- [MVC](https://github.com/BOLTB0X/UIkit/blob/main/Study/Tutorial/MVC.md)
   <br/>
 
 - [alamofire 공부](https://github.com/BOLTB0X/UIkit/tree/main/Study/alamofire)
