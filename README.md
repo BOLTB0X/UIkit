@@ -7,7 +7,7 @@
 iOS를 공부하기로 결심했을 때 무작정 스토리보드로 클론 프로젝트를 따라해본적이 있었음(양심상 업로드 불가...)
 <br/>
 
-전향 후 인턴으로 swiftUI로 프로젝트를 진행해도 많은 레퍼런스들을 UIKit로 되어저있어 필요성을 느낌
+전향 후 swiftUI로 프로젝트를 진행해도 많은 레퍼런스들을 UIKit로 되어저있어 필요성을 느낌
 <br/>
 
 cf. SwiftUI로 개발을 진행하다보면 markdown, rx 등과 같이 UIKit 형식의 레퍼런스를 많이 보게 됨
@@ -33,3 +33,9 @@ cf. SwiftUI로 개발을 진행하다보면 markdown, rx 등과 같이 UIKit 형
 <br/>
 
 ### [study](https://github.com/BOLTB0X/UIkit/tree/main/Study)
+
+- [UI 구조](https://github.com/BOLTB0X/UIkit/tree/main/Study/UI%20structure)
+  <br/>
+
+- [alamofire 공부](https://github.com/BOLTB0X/UIkit/tree/main/Study/alamofire)
+  <br/>
