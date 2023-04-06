@@ -1,9 +1,10 @@
-# Design Patterns on iOS 
+# Design Patterns on iOS
 
 [kodeco의 Design Patterns on iOS using Swift](https://www.kodeco.com/477-design-patterns-on-ios-using-swift-part-1-2)을 따라가면서 이론이나 코드의 동작방식의 설명을 추가하여 진행
 <br/>
 
 ## Intro
+
 프로그램을 재사용성이 높게 잘 설계하는 것을 지향해야함. 메모리관리 측면이나 성능보장 측면에서도 이 재사용성은 중요하므로 디자인패턴을 채택하며 개발을 진행함
 <br/>
 
@@ -13,13 +14,13 @@ Cocoa 패턴의 자세한 정리글은 [Cocoa]() 참조
 ## design patterns
 
 - 생성 패턴(Creational Patterns): Singleton
-<br/>
+  <br/>
 
 - 구조 패턴(Structural Patterns): MVC, Adapter, Facade, Decorator
-<br/>
+  <br/>
 
 - 행위 패턴(Behavioral Patterns): Observer
-<br/>
+  <br/>
 
 ## MVC(Model-View-Controller)
 
@@ -28,18 +29,20 @@ MVC(Model-View-Controller)는 Cocoa의 빌딩 블록 중 하나이며 가장 많
 그래서 오픈 소스가 정말 많음
 <br/>
 
-MVC 패턴의 자세한 정리글은 [MVC]() 참조
+MVC 패턴의 자세한 정리글은 [MVC](https://github.com/BOLTB0X/UIkit/blob/main/Study/Tutorial/MVC.md) 참조
 <br/>
 
 ## The Singleton Pattern
+
 > Singleton 디자인 패턴은 주어진 클래스에 대해 하나의 인스턴스만 존재하고 해당 인스턴스에 대한 전역 액세스
 > <br/>
 
 Class의 인스턴스를 정확히 하나만 갖는 것이 웬만하면 좋음
-<br/> 
+<br/>
 
-ex) 
-- App의 인스턴스가 하나뿐이고 장치의 기본 화면이 하나뿐이므로 각각의 인스턴스가 하나만 필요 또는 전역 구성 처리기 클래스를 사용 
+ex)
+
+- App의 인스턴스가 하나뿐이고 장치의 기본 화면이 하나뿐이므로 각각의 인스턴스가 하나만 필요 또는 전역 구성 처리기 클래스를 사용
 
 <br/>
 
@@ -58,7 +61,7 @@ final class LibraryAPI {
 }
 ```
 
-또한 Model을 정의하고 이를 관리할 ***PersistencyManager***를 생성
+또한 Model을 정의하고 이를 관리할 **_PersistencyManager_**를 생성
 <br/>
 
 ```swift
@@ -67,7 +70,7 @@ final class LibraryAPI {
 
 final class PersistencyManager {
   private var albums = [Album]()
-  
+
   init() {
     // 이니셜라이저를 추가
     //Dummy list of albums
@@ -76,38 +79,38 @@ final class PersistencyManager {
                        genre: "Pop",
                        coverUrl: "https://s3.amazonaws.com/CoverProject/album/album_david_bowie_best_of_bowie.png",
                        year: "1992")
-    
+
     let album2 = Album(title: "It's My Life",
                        artist: "No Doubt",
                        genre: "Pop",
                        coverUrl: "https://s3.amazonaws.com/CoverProject/album/album_no_doubt_its_my_life_bathwater.png",
                        year: "2003")
-    
+
     let album3 = Album(title: "Nothing Like The Sun",
                        artist: "Sting",
                        genre: "Pop",
                        coverUrl: "https://s3.amazonaws.com/CoverProject/album/album_sting_nothing_like_the_sun.png",
                        year: "1999")
-    
+
     let album4 = Album(title: "Staring at the Sun",
                        artist: "U2",
                        genre: "Pop",
                        coverUrl: "https://s3.amazonaws.com/CoverProject/album/album_u2_staring_at_the_sun.png",
                        year: "2000")
-    
+
     let album5 = Album(title: "American Pie",
                        artist: "Madonna",
                        genre: "Pop",
                        coverUrl: "https://s3.amazonaws.com/CoverProject/album/album_madonna_american_pie.png",
                        year: "2000")
-    
+
     albums = [album1, album2, album3, album4, album5]
   }
-  
+
   func getAlbums() -> [Album] {
     return albums
   }
-  
+
   func addAlbum(_ album: Album, at index: Int) {
     if (albums.count >= index) {
       albums.insert(album, at: index)
@@ -115,7 +118,7 @@ final class PersistencyManager {
       albums.append(album)
     }
   }
-  
+
   func deleteAlbum(at index: Int) {
     albums.remove(at: index)
   }
@@ -123,6 +126,7 @@ final class PersistencyManager {
 ```
 
 ## The Facade Design Pattern
+
 > Facade 디자인 패턴은 복잡한 하위 시스템에 대한 단일 인터페이스를 제공
 > <br/>
 > 사용자를 일련의 클래스 및 해당 API에 노출하는 대신 하나의 간단한 통합 API만 노출
@@ -135,7 +139,7 @@ Facade 패턴의 자세한 정리글은 [Facade]() 참조
 <br/>
 
 앨범 data를 로컬에 저장하는 PersistencyManager와 원격 통신을 처리하는 HTTPClient가 있음
-<br/> 
+<br/>
 프로젝트의 다른 클래스는 LibraryAPI의 외관 뒤에 숨어 있으므로 인식 x
 <br/>
 
@@ -149,14 +153,14 @@ private let isOnline = false
 func getAlbums() -> [Album] {
     return persistencyManager.getAlbums()
   }
-    
+
   func addAlbum(_ album: Album, at index: Int) {
     persistencyManager.addAlbum(album, at: index)
     if isOnline {
       httpClient.postRequest("/api/addAlbum", body: album.description)
     }
   }
-    
+
   func deleteAlbum(at index: Int) {
     persistencyManager.deleteAlbum(at: index)
     if isOnline {
@@ -164,10 +168,12 @@ func getAlbums() -> [Album] {
     }
   }
 ```
+
 프로퍼티에 담아서 메소드를 편리하게 이용
-<br/> 
+<br/>
 
 ## The Decorator Design Pattern
+
 코드를 수정하지 않고 개체에 동작과 책임을 동적으로 추가
 <br/>
 클래스를 다른 개체로 래핑하여 클래스의 동작을 수정하는 서브클래싱의 대안
@@ -183,11 +189,11 @@ Delegation 패턴의 자세한 정리글은 [Delegation]() 참조
 ### Extensions
 
 이 튜토리얼에서는 앨범 제목은 어디에서 가져오기 위해 사용
-<br/> 
+<br/>
 앨범은 model이므로 data를 표시하는 방법은 중요 X, Album 구조체에 이 기능을 추가하려면 외부 코드가 필요
 <br/>
 
-*** Album 구조체의 Extensions을 만들 것 *** 
+**_ Album 구조체의 Extensions을 만들 것 _**
 <br/>
 
 UITableView와 함께 쉽게 사용할 수 있는 데이터 구조를 반환하는 새로운 메서드를 정의
@@ -210,12 +216,14 @@ extension Album {
   }
 }
 ```
+
 즉 extension으로 앨범에서 직접 속성을 사용, 앨범 구조에 추가했지만 수정 X
 <br/>
 -> 앨범의 UITableView 같은 표현을 반환 가능
 <br/>
 
 ### Delegate
+
 ```swift
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
   guard let albumData = currentAlbumData else {
@@ -237,5 +245,6 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
 ```
 
 ## 참고
+
 https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=jvioonpe&logNo=220227413391
 <br/>
