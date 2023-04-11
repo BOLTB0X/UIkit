@@ -47,5 +47,14 @@ TODO
 - [MVC](https://github.com/BOLTB0X/UIkit/blob/main/Study/Tutorial/MVC.md)
   <br/>
 
-- [alamofire 공부](https://github.com/BOLTB0X/UIkit/tree/main/Study/alamofire)
+- [extensions](ttps://github.com/BOLTB0X/UIkit/blob/main/Study/Tutorial/extensions.md)
+  <br/>
+
+- [delegate](ttps://github.com/BOLTB0X/UIkit/blob/main/Study/Tutorial/delegate.md)
+  <br/>
+
+- [Facade](https://github.com/BOLTB0X/UIkit/blob/main/Study/Tutorial/Facade.md)
+  <br/>
+
+- [alamofire](https://github.com/BOLTB0X/UIkit/tree/main/Study/alamofire)
   <br/>
