@@ -1,16 +1,21 @@
-/*
- See LICENSE folder for this sample’s licensing information.
- */
+//
+//  Reminder.swift
+//  Today
+//
+//  Created by KyungHeon Lee on 2023/02/22.
+//
 
 import Foundation
 
 struct Reminder {
     var title: String
     var dueDate: Date
-    var notes: String? = nil
+    var notes: String? = nil // 옵셔널 변수 추가
     var isComplete: Bool = false
+    
 }
 
+// 샘플 미리 Reminder data를 저장할 확장자를 추가
 #if DEBUG
 extension Reminder {
     static var sampleData = [
@@ -44,3 +49,6 @@ extension Reminder {
     ]
 }
 #endif
+
+// 이 과정은 앱의 프로젝트, 스토리보드 및 데이터 구조를 설정한 것
+// 다음과정이 컬렉션 뷰 자체의 구성 요소부터 시작하여 컬렉션 뷰의 모양에 대해 작업할 예정

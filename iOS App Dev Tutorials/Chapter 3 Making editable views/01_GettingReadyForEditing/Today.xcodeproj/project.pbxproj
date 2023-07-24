@@ -91,9 +91,9 @@
 		AAD0598628EC8D10004F4962 /* Today */ = {
 			isa = PBXGroup;
 			children = (
-				AAD059C228ECBFAA004F4962 /* Models */,
 				AAD0598728EC8D10004F4962 /* AppDelegate.swift */,
 				AAD0598928EC8D10004F4962 /* SceneDelegate.swift */,
+				AAD059C228ECBFAA004F4962 /* Models */,
 				AAD059CE28ECDA7D004F4962 /* ListViewController */,
 				AA8E929C28EE21940027AD15 /* DetailViewController */,
 				AAD0598D28EC8D10004F4962 /* Main.storyboard */,
