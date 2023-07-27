@@ -11,6 +11,8 @@ import UIKit
 class ReminderViewController: UICollectionViewController {
     // 저번 챕터랑 동일하게 Int 및 Row 일반 매개변수를 지정하여 데이터 소스가 섹션 번호에 대해 Int 인스턴스를 사용하고 목록 행에 대해 이전 섹션에서 정의한 사용자 정의 열거인 Row의 인스턴스를 사용하도록 컴파일러에 지시하도록 하는 거임
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, Row>
+    //  Int 및 Row 일반 매개변수를 지정하여 스냅샷이 섹션 번호에 Int 인스턴스를 사용하고 목록의 항목에 Row 인스턴스를 사용하도록 컴파일러에 지시
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Row>
     
     var reminder: Reminder
     private var dataSource: DataSource!
@@ -55,6 +57,17 @@ class ReminderViewController: UICollectionViewController {
             return collectionView.dequeueConfiguredReusableCell(
                 using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
+        
+        if #available(iOS 16, *) {
+            // .navigator 스타일은 제목을 중앙에 가로로 배치하고 왼쪽에 뒤로 버튼을 포함
+            navigationItem.style = .navigator
+        }
+        
+        navigationItem.title = NSLocalizedString("Reminder", comment: "Reminder view controller title")
+        
+        // 뷰 컨트롤러가 처음 로드될 때 이 목록에 데이터 스냅샷을 적용
+        // 나중에 미리 알림 세부 항목을 편집할 때 다른 스냅샷을 적용하여 사용자 인터페이스를 업데이트하여 사용자가 변경한 사항을 반영이 필요
+        updateSnapshot()
     }
     
     // MARK: - cellRegistrationHandler
@@ -87,5 +100,15 @@ class ReminderViewController: UICollectionViewController {
         case .time: return reminder.dueDate.formatted(date: .omitted, time: .shortened)
         case .title: return reminder.title
         }
+    }
+    
+    // MARK: - updateSnapshot
+    private func updateSnapshot() {
+        var snapshot = Snapshot()
+        snapshot.appendSections([0])
+        snapshot.appendItems([Row.title, Row.date, Row.time, Row.notes], toSection: 0)
+        // 스냅샷을 데이터 소스에 적용함
+        // 스냅샷을 적용하면 사용자 인터페이스가 업데이트되어 스냅샷의 데이터와 스타일이 반영 됨
+        dataSource.apply(snapshot)
     }
 }

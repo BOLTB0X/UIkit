@@ -13,6 +13,7 @@ class ReminderListViewController: UICollectionViewController {
     // 미리 알림 인스턴스 배열을 저장하는 미리 알림 프로퍼티를 추가
     var reminders: [Reminder] = Reminder.sampleData
     
+    // MARK: - viewDidLoad
     // 뷰 컨트롤러가 뷰 계층 구조를 메모리에 로드한 후 시스템은 viewDidLoad()를 호출
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,36 @@ class ReminderListViewController: UICollectionViewController {
         updateSnapshot() // 메소드 호출
         
         collectionView.dataSource = dataSource
+    }
+    
+    // MARK: - collectionView
+    override func collectionView(
+        _ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath
+    ) -> Bool {
+        // 이 인덱스 경로와 관련된 reminder의 식별자를 검색하고 id라는 상수에 할당함
+        // 즉 indexPath의 항목 요소는 Int이므로 이를 배열 인덱스로 사용하여 적절한 reminder을 검색 가능
+        let id = reminders[indexPath.item].id
+        
+        // pushDetailViewForReminder(withId:) 메서드를 호출
+        // 이 메서드는 상세 view 컨트롤러를 탐색 스택에 추가하여 상세 보기가 화면에 푸시되도록 함
+        pushDetailViewForReminder(withId: id)
+        
+        // 사용자가 선택한 항목을 탭한 항목을 표시하지 않으므로 false를 반환
+        // 해당 목록 항목에 대한 세부 정보 view로 전환
+        return false
+    }
+    
+    // MARK: - pushDetailViewForReminder
+    // reminder identifier를 식별하는 메소드
+    func pushDetailViewForReminder(withId id: Reminder.ID) {
+        // 모델의 reminder 배열에서 식별자와 일치하는 reminder을 검색하고 reminder이라는 상수에 할당
+        let reminder = reminder(withId: id)
+        let viewController = ReminderViewController(reminder: reminder)
+        
+        /// 뷰 컨트롤러를 탐색 컨트롤러 스택으로 푸시
+        /// 뷰 컨트롤러가 현재 내비게이션 컨트롤러에 포함된 경우 내비게이션 컨트롤러에 대한 참조는 선택적 navigationController 프로퍼티에 저장
+        /// 세부 정보 view는 제공된 식별자에 대한 reminder 세부 data를 표시, 뒤로 버튼은 탐색 표시줄의 선행 항목으로 자동으로 나타남
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     // 일단 return 값이 안되어 추가가 필요
