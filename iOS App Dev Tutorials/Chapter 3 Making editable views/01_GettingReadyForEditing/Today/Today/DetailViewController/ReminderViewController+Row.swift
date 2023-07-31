@@ -13,6 +13,7 @@ extension ReminderViewController {
     /// UIKit 목록에 데이터 및 스타일을 제공하는 비교 가능한 데이터 소스는 항목이 Hashable을 준수해야 함
     /// 왜냐하면 diffable 데이터 소스는 해시 값을 사용하여 스냅샷 간에 변경된 요소를 확인하기 때문
     enum Row: Hashable {
+        case header(String) // add
         case date
         case notes
         case time

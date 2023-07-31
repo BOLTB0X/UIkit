@@ -23,6 +23,9 @@ class ReminderViewController: UICollectionViewController {
         // 목록 구성에서 구분 기호를 비활성화하여 목록 셀 사이의 줄을 제거
         listConfiguration.showsSeparators = false
         
+        // 이니셜라이저에서 목록 구성의 헤더 모드를 .firstItemInSection으로 변경
+        listConfiguration.headerMode = .firstItemInSection
+
         // 목록 구성을 사용하여 구성 목록 레이아웃을 만들고 그 결과를 listLayout이라는 상수에 할당
         // 목록 구성 레이아웃에는 목록에 필요한 레이아웃 정보만 포함되어 있음
         let listLayout = UICollectionViewCompositionalLayout.list(using: listConfiguration)
@@ -64,27 +67,51 @@ class ReminderViewController: UICollectionViewController {
         
         navigationItem.title = NSLocalizedString("Reminder", comment: "Reminder view controller title")
         
+        // viewDidLoad()에서 내비게이션 항목의 rightBarButtonItem 속성에 editButtonItem을 할당
+        // 편집 버튼을 탭하면 제목이 "편집"과 "완료" 사이에서 자동으로 전환 됌
+        navigationItem.rightBarButtonItem = editButtonItem
+        
         // 뷰 컨트롤러가 처음 로드될 때 이 목록에 데이터 스냅샷을 적용
         // 나중에 미리 알림 세부 항목을 편집할 때 다른 스냅샷을 적용하여 사용자 인터페이스를 업데이트하여 사용자가 변경한 사항을 반영이 필요
-        updateSnapshot()
+        //updateSnapshot()
+        
+        updateSnapshotForViewing()
+    }
+    
+    // MARK: - setEditing
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        // 보기가 편집 모드로 전환되는 경우 updateSnapshotForEditing()을 호출
+        if editing {
+            updateSnapshotForEditing()
+        } else {
+            updateSnapshotForViewing() // updateSnapshotForViewing()을 호출
+        }
     }
     
     // MARK: - cellRegistrationHandler
     // 셀, 인덱스 경로 및 행을 허용하는 cellRegistrationHandler 메서드
     func cellRegistrationHandler(cell: UICollectionViewListCell, indexPath: IndexPath, row: Row) {
-        // 셀의 기본 구성을 contentConfiguration이라는 변수에 할당
-        //행에 기본 스타일을 할당하는 것
-        var contentConfiguration = cell.defaultContentConfiguration()
-        
-        /// 행에 적합한 텍스트 및 글꼴을 구성
-        /// 여기서 text(for:) 함수를 사용하는 것운 데이터를 제공하고 이전 섹션에서 정의한 행의 textStyle 계산 변수를 사용하여 글꼴 스타일을 제공
-        contentConfiguration.text = text(for: row)
-        contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: row.textStyle)
-        
-        // 행의 이미지 계산 변수를 구성의 이미지 속성에 할당
-        contentConfiguration.image = row.image
-        // 기본 콘텐츠 및 스타일에 사용자 지정을 추가했으므로 컬렉션 보기 셀에 사용자 지정 구성을 적용
-        cell.contentConfiguration = contentConfiguration
+        // cellRegistrationHandler에서 section(for:) 메서드를 사용하여 인덱스 경로에서 섹션을 검색
+        let section = section(for: indexPath)
+        // 다른 섹션 및 행 조합에 대해 셀을 구성하려면 튜플을 사용
+        switch (section, row) {
+        // cellRegistrationHandler(cell:indexPath:row)에서 헤더 행과 일치하는 사례를 추가하고 헤더 행의 연결된 문자열 값을 title이라는 상수에 저장
+        case (_, .header(let title)):
+            var contentConfiguration = cell.defaultContentConfiguration() // 셀의 기본 구성을 검색하고 변수에 저장
+            contentConfiguration.text = title
+            cell.contentConfiguration = contentConfiguration
+        case (.view, _):
+            var contentConfiguration = cell.defaultContentConfiguration()
+            contentConfiguration.text = text(for: row)
+            contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: row.textStyle)
+            contentConfiguration.image = row.image
+            cell.contentConfiguration = contentConfiguration
+        // switch 문이 예기치 않은 행이나 섹션을 일치시키려고 시도하는 경우 기본 사례에서 fatalError(_:file:line:)를 호출
+        // 튜플을 사용하여 섹션 및 행 값을 switch 문과 함께 사용할 수 있는 단일 복합 값으로 그룹화 하는 것
+        default:
+            fatalError("Unexpected combination of section and row.")
+        }
         cell.tintColor = .todayPrimaryTint
     }
     
@@ -98,17 +125,29 @@ class ReminderViewController: UICollectionViewController {
         case .notes: return reminder.notes
         case .time: return reminder.dueDate.formatted(date: .omitted, time: .shortened)
         case .title: return reminder.title
+        default: return nil // default case 추가
         }
     }
     
-    // MARK: - updateSnapshot
-    private func updateSnapshot() {
+    // MARK: - updateSnapshotForEditing
+    private func updateSnapshotForEditing() {
         var snapshot = Snapshot()
-        // 컨트롤러가 보기 모드인 경우 이 방법을 사용하여 스냅샷을 구성
+        // updateSnapshotForEditing()에서 각 섹션에 헤더 항목을 추가
+        // name 속성은 헤더에 표시할 각 사례에 대한 로케일 인식 문자열을 계산
+        snapshot.appendSections([.title, .date, .notes])
+        snapshot.appendItems([.header(Section.title.name)], toSection: .title)
+        snapshot.appendItems([.header(Section.date.name)], toSection: .date)
+        snapshot.appendItems([.header(Section.notes.name)], toSection: .notes)
+        dataSource.apply(snapshot)
+    }
+    
+    // MARK: - updateSnapshotForViewing
+    private func updateSnapshotForViewing() {
+        // 스냅샷은 데이터의 현재 상태를 나타냄
+        var snapshot = Snapshot()
         snapshot.appendSections([.view])
-        snapshot.appendItems([Row.title, Row.date, Row.time, Row.notes], toSection: .view)
-        // 스냅샷을 데이터 소스에 적용함
-        // 스냅샷을 적용하면 사용자 인터페이스가 업데이트되어 스냅샷의 데이터와 스타일이 반영 됨
+        // updateSnapshotForViewing()에서 빈 헤더 항목을 스냅샷 항목의 첫 번째 요소로 삽입
+        snapshot.appendItems([Row.header(""), Row.title, Row.date, Row.time, Row.notes], toSection: .view)
         dataSource.apply(snapshot)
     }
     
@@ -120,8 +159,8 @@ class ReminderViewController: UICollectionViewController {
         let sectionNumber = isEditing ? indexPath.section + 1 : indexPath.section
         
         guard let section = Section(rawValue: sectionNumber) else {
-                    fatalError("Unable to find matching section")
-                }
+            fatalError("Unable to find matching section")
+        }
         
         return section
     }
