@@ -33,6 +33,36 @@ extension ReminderViewController {
         return contentConfiguration
     }
     
+    // MARK: - titleConfiguration
+    // ReminderViewController+CellConfiguration.swift에서 셀과 제목을 수락하고 TextFieldContentView.Configuration을 반환하는 titleConfiguration(for:with:) 함수를 추가
+    func titleConfiguration(for cell: UICollectionViewListCell, with title: String?)
+    -> TextFieldContentView.Configuration
+    {
+        var contentConfiguration = cell.textFieldConfiguration()
+        contentConfiguration.text = title
+        return contentConfiguration
+    }
+    
+    // MARK: - dateConfiguration
+    // 알림 날짜에 대한 날짜 선택기 구성 메소드
+    func dateConfiguration(for cell: UICollectionViewListCell, with date: Date)
+    -> DatePickerContentView.Configuration
+    {
+        var contentConfiguration = cell.datePickerConfiguration()
+        contentConfiguration.date = date
+        return contentConfiguration
+    }
+
+    // MARK: - notesConfiguration
+    // 알림 메모에 대한 텍스트 view 구성을 생성하고 반환하는 함수
+    func notesConfiguration(for cell: UICollectionViewListCell, with notes: String?)
+    -> TextViewContentView.Configuration
+    {
+        var contentConfiguration = cell.textViewConfiguration()
+        contentConfiguration.text = notes
+        return contentConfiguration
+    }
+    
     // MARK: - text
     // 주어진 행과 관련된 텍스트를 반환하는 text(for:) 함수
     func text(for row: Row) -> String? {

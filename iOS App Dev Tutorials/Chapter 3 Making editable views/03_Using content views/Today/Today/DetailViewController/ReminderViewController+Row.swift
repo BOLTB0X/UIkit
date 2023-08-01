@@ -18,7 +18,11 @@ extension ReminderViewController {
         case notes
         case time
         case title
-        
+        // ReminderViewController+Row.swift에서 editableDate 케이스를 추가하고 editableText에 대한 연관된 ​​값을 선택적 문자열로 변경
+        /// 메모나 제목을 편집하려면 editableText 대소문자를 사용
+        /// 그러나 미리 알림이 있는 메모를 포함하는 것은 선택 사항인 반면 제목은 필수
+        case editableDate(Date)
+        case editableText(String?)
         
         var imageName: String? {
             switch self {

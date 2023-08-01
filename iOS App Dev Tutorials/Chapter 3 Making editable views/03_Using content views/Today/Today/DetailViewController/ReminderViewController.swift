@@ -100,20 +100,21 @@ class ReminderViewController: UICollectionViewController {
         case (_, .header(let title)):
             // 변경
             cell.contentConfiguration = headerConfiguration(for: cell, with: title)
-//            var contentConfiguration = cell.defaultContentConfiguration() // 셀의 기본 구성을 검색하고 변수에 저장
-//            contentConfiguration.text = title
-//            cell.contentConfiguration = contentConfiguration
-            
         case (.view, _):
             // ReminderViewController.swift에서 .view 사례에 대한 기존 코드를 새 defaultConfiguration 함수에 대한 호출로 변경
             cell.contentConfiguration = defaultConfiguration(for: cell, at: row)
-//            var contentConfiguration = cell.defaultContentConfiguration()
-//            contentConfiguration.text = text(for: row)
-//            contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: row.textStyle)
-//            contentConfiguration.image = row.image
-//            cell.contentConfiguration = contentConfiguration
-        // switch 문이 예기치 않은 행이나 섹션을 일치시키려고 시도하는 경우 기본 사례에서 fatalError(_:file:line:)를 호출
-        // 튜플을 사용하여 섹션 및 행 값을 switch 문과 함께 사용할 수 있는 단일 복합 값으로 그룹화 하는 것
+        
+        // cellRegistrationHandler(cell:indexPath:row:)에서 (.title, .editableText(let title))에 대한 새 사례를 추가
+        case (.title, .editableText(let title)):
+            // 셀 구성에 새 제목 구성을 할당
+            cell.contentConfiguration = titleConfiguration(for: cell, with: title)
+            
+        // cellRegistrationHandler(cell:indexPath:row:)에서 새 구성 메서드를 호출하는 날짜 및 메모에 대한 사례를 추가하고 해당 출력을 관련 목록 셀 구성에 할당
+        //    구성을 할당하면 변경 사항을 반영하도록 사용자 인터페이스가 업데이트
+        case (.date, .editableDate(let date)):
+            cell.contentConfiguration = dateConfiguration(for: cell, with: date)
+        case (.notes, .editableText(let notes)):
+            cell.contentConfiguration = notesConfiguration(for: cell, with: notes)
         default:
             fatalError("Unexpected combination of section and row.")
         }
@@ -123,12 +124,12 @@ class ReminderViewController: UICollectionViewController {
     // MARK: - updateSnapshotForEditing
     private func updateSnapshotForEditing() {
         var snapshot = Snapshot()
-        // updateSnapshotForEditing()에서 각 섹션에 헤더 항목을 추가
-        // name 속성은 헤더에 표시할 각 사례에 대한 로케일 인식 문자열을 계산
         snapshot.appendSections([.title, .date, .notes])
-        snapshot.appendItems([.header(Section.title.name)], toSection: .title)
-        snapshot.appendItems([.header(Section.date.name)], toSection: .date)
-        snapshot.appendItems([.header(Section.notes.name)], toSection: .notes)
+        // updateSnapshotForEditing()의 .title 섹션에 .editableText 항목을 추가
+        snapshot.appendItems([.header(Section.title.name), .editableText(reminder.title)], toSection: .title)
+        // updateSnapshotForEditing에서 알림 날짜 및 메모에 대한 항목을 추가
+        snapshot.appendItems([.header(Section.date.name), .editableDate(reminder.dueDate)], toSection: .date)
+        snapshot.appendItems([.header(Section.notes.name), .editableText(reminder.notes)], toSection: .notes)
         dataSource.apply(snapshot)
     }
     
