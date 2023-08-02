@@ -40,6 +40,10 @@ extension ReminderViewController {
     {
         var contentConfiguration = cell.textFieldConfiguration()
         contentConfiguration.text = title
+        // workingReminder에 새 제목을 할당하는 onChange 핸들러를 추가
+        contentConfiguration.onChange = { [weak self] title in
+            self?.workingReminder.title = title
+        }
         return contentConfiguration
     }
     
@@ -50,6 +54,10 @@ extension ReminderViewController {
     {
         var contentConfiguration = cell.datePickerConfiguration()
         contentConfiguration.date = date
+        // workingReminder에 새 날짜를 할당하는 onChange 핸들러를 추가
+        contentConfiguration.onChange = { [weak self] dueDate in
+            self?.workingReminder.dueDate = dueDate
+        }
         return contentConfiguration
     }
 

@@ -13,7 +13,7 @@ class DatePickerContentView: UIView, UIContentView {
     // MARK: - Configuration
     struct Configuration: UIContentConfiguration {
         var date = Date.now
-
+        var onChange: (Date) -> Void = { _ in }
 
         func makeContentView() -> UIView & UIContentView {
             return DatePickerContentView(self)
@@ -33,8 +33,11 @@ class DatePickerContentView: UIView, UIContentView {
         self.configuration = configuration
         super.init(frame: .zero)
         addPinnedSubview(datePicker)
+        // 이니셜라이저에서 .valueChanged 이벤트에 대한 대상 및 작업을 설정
+        // view에 대상과 작업을 추가하면 보기는 날짜가 변경될 때마다 대상의 didPick(_:) 선택자를 호출
+        datePicker.addTarget(self, action: #selector(didPick(_:)), for: .valueChanged)
+        
         datePicker.preferredDatePickerStyle = .inline
-
     }
 
 
@@ -46,6 +49,13 @@ class DatePickerContentView: UIView, UIContentView {
     func configure(configuration: UIContentConfiguration) {
         guard let configuration = configuration as? Configuration else { return }
         datePicker.date = configuration.date
+    }
+    
+    // MARK: - didPick
+    // 이 기능은 미리 알림 날짜에 대한 편집 내용을 저장
+    @objc private func didPick(_ sender: UIDatePicker) {
+        guard let configuration = configuration as? DatePickerContentView.Configuration else { return }
+        configuration.onChange(sender.date)
     }
 }
 

@@ -17,6 +17,10 @@ class TextFieldContentView: UIView, UIContentView {
     struct Configuration: UIContentConfiguration {
         var text: String? = ""
         
+        // 기본 빈 작업으로 onChange 핸들러를 추가
+        // 클로저는 사용자가 텍스트 필드에서 텍스트를 편집할 때 수행하려는 동작을 보유
+        var onChange: (String) -> Void = { _ in }
+        
         // MARK: - makeContentView
         /// UIContentView 프로토콜을 준수하는 UIView를 반환하는 makeContentView()
         /// 이 함수는 UIContentConfiguration 프로토콜을 준수하기 위해 포함해야 하는 최종 동작
@@ -50,6 +54,12 @@ class TextFieldContentView: UIView, UIContentView {
         /// 텍스트 필드는 슈퍼뷰의 상단에 고정되며 수평 패딩은 16
         /// 상단 및 하단 인세트가 0이면 텍스트 필드가 슈퍼뷰의 전체 높이에 걸쳐 있게 함
         addPinnedSubview(textField, insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+        
+        // editingChanged 이벤트에 대한 대상 및 작업을 설정
+        /// 이 view에 대상 및 작업을 추가하면 컨트롤이 사용자 상호 작용을 감지할 때마다 view가 대상의 didChange(_:) 선택자를 호출
+        /// 이 경우 사용자가 필드의 텍스트를 변경할 때마다 메서드를 호출
+        textField.addTarget(self, action: #selector(didChange(_:)), for: .editingChanged)
+        
         /// 텍스트 필드의 clearButtonMode를 .whileEditing으로 설정
         /// clearButtonMode는 텍스트 필드에 콘텐츠가 있을 때 후행 쪽에 텍스트 지우기 버튼을 표시하도록 지시하여 사용자가 텍스트를 빠르게 제거할 수 있는 방법을 제공
         textField.clearButtonMode = .whileEditing
@@ -68,6 +78,16 @@ class TextFieldContentView: UIView, UIContentView {
         // 이 구성에 대한 입력에는 텍스트 필드의 내용으로 설정할 수 있도록 연결된 텍스트 속성이 있어야 함
         guard let configuration = configuration as? Configuration else { return }
         textField.text = configuration.text
+    }
+    
+    // MARK: - didChange
+    // @objc 특성을 사용하여 Objective-C 코드에서 속성이나 메서드를 사용할 수 있도록 알림을 식별 가능하게 만들기에서 기억할 수 있음
+    @objc private func didChange(_ sender: UITextField) {
+        // guard 문을 사용하여 선택적으로 구성 속성을 상수에 바인딩
+        // 속성에 값이 없거나 잘못된 유형인 경우 함수 호출 지점으로 돌아감
+        guard let configuration = configuration as? TextFieldContentView.Configuration else { return }
+        // onChange 핸들러를 호출하고 텍스트 필드의 내용을 전달
+        configuration.onChange(textField.text ?? "")
     }
 }
 
