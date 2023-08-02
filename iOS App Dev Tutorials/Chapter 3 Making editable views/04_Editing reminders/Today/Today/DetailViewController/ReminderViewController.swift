@@ -13,16 +13,27 @@ class ReminderViewController: UICollectionViewController {
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, Row>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Row>
     
-    var reminder: Reminder
+    var reminder: Reminder {
+        didSet {
+            onChange(reminder)
+        }
+    }
+    
     // workingReminder라는 새 프로퍼티를 추가
     // 이 임시 알림은 사용자가 저장하거나 삭제하도록 선택할 때까지 편집 내용을 저장
     var workingReminder: Reminder
+    var onChange: (Reminder) -> Void
     private var dataSource: DataSource!
     
-    init(reminder: Reminder) {
+    init(reminder: Reminder, onChange: @escaping (Reminder) -> Void) {
         self.reminder = reminder
         // 이니셜라이저에서 알림 매개변수의 초기 내용을 workingReminder 속성에 복사
         self.workingReminder = reminder
+    
+        /// 이스케이프 onChange 매개변수를 이니셜라이저에 추가
+        /// 클로저를 인수로 전달할 때 함수가 반환된 후에 호출되면 이스케이프라고 레이블을 지정해야 함
+        self.onChange = onChange
+
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         // 목록 구성에서 구분 기호를 비활성화하여 목록 셀 사이의 줄을 제거
         listConfiguration.showsSeparators = false
@@ -127,13 +138,32 @@ class ReminderViewController: UICollectionViewController {
         cell.tintColor = .todayPrimaryTint
     }
     
+    // MARK: - didCancelEdit
+    @objc func didCancelEdit() {
+        // workingReminder에 알림을 할당
+        // 사용자가 결정하면 미리 알림을 다시 편집할 수 있음
+        workingReminder = reminder
+        
+        /// 뷰 컨트롤러의 setEditing(_:animated:) 메서드에 false를 전달하여 편집 모드를 종료
+        /// 버튼에 "편집"이 다시 표시
+        setEditing(false, animated: true)
+    }
+    
     // MARK: - prepareForEditing
     private func prepareForEditing() {
+        // prepareForEditing에서 새 취소 버튼을 왼쪽 탐색 모음 버튼 항목으로 할당
+        // 사용자가 취소 버튼을 누를 때 트리거할 didCancelEdit() 작업을 선택함
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+                    barButtonSystemItem: .cancel, target: self, action: #selector(didCancelEdit))
         updateSnapshotForEditing()
     }
     
     // MARK: - prepareForViewing
     private func prepareForViewing() {
+        // prepareForViewing에서 왼쪽 막대 버튼 항목을 제거합니다.
+        // 취소 버튼은 편집 모드에서만 필요
+        navigationItem.leftBarButtonItem = nil
+        
         // prepareForViewing에서 미리 알림을 업데이트
         if workingReminder != reminder {
             reminder = workingReminder

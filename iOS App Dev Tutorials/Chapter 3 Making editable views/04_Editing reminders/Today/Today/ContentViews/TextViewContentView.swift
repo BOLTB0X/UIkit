@@ -12,7 +12,9 @@ class TextViewContentView: UIView, UIContentView {
     // MARK: - Configuration
     struct Configuration: UIContentConfiguration {
         var text: String? = ""
-
+        
+        var onChange: (String) -> Void = { _ in }
+        
         // MARK: - makeContentView
         func makeContentView() -> UIView & UIContentView {
             return TextViewContentView(self)
@@ -44,6 +46,10 @@ class TextViewContentView: UIView, UIContentView {
         // 이니셜라이저에서 텍스트 뷰의 선택적 배경색을 nil로 설정
         textView.backgroundColor = nil
         
+        /// self를 텍스트 보기의 대리자로 설정
+        ///  콘텐츠 보기를 텍스트 보기 컨트롤의 대리인으로 할당. 따라서 사용자 상호 작용에 대한 텍스트 보기 컨트롤을 모니터링하고 그에 따라 응답
+        textView.delegate = self
+        
         // 사용자는 편집 가능한 메모 텍스트 보기에서 실질적인 텍스트를 입력할 수 있음
         // 텍스트 본문을 위한 글꼴 스타일은 적절한 디자인 선택
         textView.font = UIFont.preferredFont(forTextStyle: .body)
@@ -66,5 +72,17 @@ extension UICollectionViewListCell {
     // MARK: - textViewConfiguration
     func textViewConfiguration() -> TextViewContentView.Configuration {
         TextViewContentView.Configuration()
+    }
+}
+
+extension TextViewContentView: UITextViewDelegate {
+    // MARK: - textViewDidChange
+    /// 텍스트 뷰의 대리자는 사용자 상호 작용을 감지할 때마다 이 함수를 호출
+    /// 다른 일반적인 상호 작용에는 textViewDidBeginEditing(_:) 및 textViewDidEndEditing(_:)이 포함
+    func textViewDidChange(_ textView: UITextView) {
+        // 해당 이벤트 핸들러를 호출하기 전에 구성이 텍스트 보기 구성인지 확인
+        guard let configuration = configuration as? TextViewContentView.Configuration else { return }
+        configuration.onChange(textView.text)
+
     }
 }

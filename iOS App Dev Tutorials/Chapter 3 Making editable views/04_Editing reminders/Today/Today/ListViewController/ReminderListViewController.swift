@@ -60,7 +60,13 @@ class ReminderListViewController: UICollectionViewController {
     func pushDetailViewForReminder(withId id: Reminder.ID) {
         // 모델의 reminder 배열에서 식별자와 일치하는 reminder을 검색하고 reminder이라는 상수에 할당
         let reminder = reminder(withId: id)
-        let viewController = ReminderViewController(reminder: reminder)
+        // onChange 핸들러를 ReminderViewController 이니셜라이저에 추가
+        let viewController = ReminderViewController(reminder: reminder) { [weak self] reminder in
+            // 이 함수는 편집된 미리 알림으로 데이터 소스의 미리 알림 배열을 업데이트
+            self?.updateReminder(reminder)
+            // updateSnapshot(reloading:)을 호출
+            self?.updateSnapshot(reloading: [reminder.id])
+        }
         
         /// 뷰 컨트롤러를 탐색 컨트롤러 스택으로 푸시
         /// 뷰 컨트롤러가 현재 내비게이션 컨트롤러에 포함된 경우 내비게이션 컨트롤러에 대한 참조는 선택적 navigationController 프로퍼티에 저장

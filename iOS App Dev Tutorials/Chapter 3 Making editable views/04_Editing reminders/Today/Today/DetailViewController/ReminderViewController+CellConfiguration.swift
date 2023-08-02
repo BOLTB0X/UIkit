@@ -68,6 +68,10 @@ extension ReminderViewController {
     {
         var contentConfiguration = cell.textViewConfiguration()
         contentConfiguration.text = notes
+        // workingReminder에 업데이트된 메모를 할당하는 onChange 핸들러를 추가
+        contentConfiguration.onChange = { [weak self] notes in
+            self?.workingReminder.notes = notes
+        }
         return contentConfiguration
     }
     
