@@ -21,6 +21,12 @@ extension ReminderListViewController {
         // 빈 완료 핸들러가 있는 ReminderViewController 인스턴스를 만듬
         // 리마인더 뷰 컨트롤러가 리마인더 목록 뷰 컨트롤러에 대한 강력한 참조를 캡처하고 저장하지 못하도록 클로저의 캡처 목록에 [weak self]를 추가함
         let viewController = ReminderViewController(reminder: reminder) { [weak self] reminder in
+            // didPressAddButton의 빈 클로저에서 addReminder를 호출
+            self?.addReminder(reminder)
+            self?.updateSnapshot() // 스냅샷을 업데이트
+            // 목록 view 만들기에서 앱의 데이터가 변경될 때마다 사용자 인터페이스를 업데이트하기 위해 스냅샷을 만들고 적용해야 했던 것을 기억 가능
+            
+            self?.dismiss(animated: true)
         }
         
         // 뷰 컨트롤러의 isAddingNewReminder 속성을 true로 설정

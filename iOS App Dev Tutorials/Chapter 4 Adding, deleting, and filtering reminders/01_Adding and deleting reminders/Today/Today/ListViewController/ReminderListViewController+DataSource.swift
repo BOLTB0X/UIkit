@@ -97,6 +97,19 @@ extension ReminderListViewController {
         updateReminder(reminder)
         updateSnapshot(reloading: [id])
     }
+    
+    // MARK: - addReminder
+    // 미리 알림 배열에 미리 알림을 추가하는 addReminder(_:) 메서드
+    func addReminder(_ reminder: Reminder) {
+        reminders.append(reminder)
+    }
+    
+    // MARK: - deleteReminder
+    // 지정된 식별자를 가진 알림을 제거하는 deleteReminder
+    func deleteReminder(withId id: Reminder.ID) {
+        let index = reminders.indexOfReminder(withId: id)
+        reminders.remove(at: index)
+    }
 
     // MARK: - doneButtonAccessibilityAction
     private func doneButtonAccessibilityAction(for reminder: Reminder) -> UIAccessibilityCustomAction

@@ -88,17 +88,45 @@ class ReminderListViewController: UICollectionViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
+    // MARK: - listLayout
     // 일단 return 값이 안되어 추가가 필요
     // 구분 기호를 비활성화하고 배경색을 지우도록 변경
     private func listLayout() -> UICollectionViewCompositionalLayout {
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .grouped)
         listConfiguration.showsSeparators = false
+        
+        // listLayout()에서 목록 구성의 trailingSwipeActionsConfigurationProvider를 makeSwipeActions로 설정
+        // 목록 구성에는 사용자가 셀의 앞쪽 가장자리를 살짝 밀 때 표시할 작업을 제공하는 leadingSwipeActionsConfigurationProvider
+        listConfiguration.trailingSwipeActionsConfigurationProvider = makeSwipeActions
+
+        
         listConfiguration.backgroundColor = .clear
         
         // 목록 구성으로 새로운 컴포지션 레이아웃 반환
         return UICollectionViewCompositionalLayout.list(using: listConfiguration)
     }
     
-    
+    // MARK: - makeSwipeActions
+    // IndexPath를 수락하고 선택적 UISwipeActionsConfiguration을 반환하는 makeSwipeActions(for:) 함수
+    // 각 스와이프 동작 구성 개체에는 사용자가 왼쪽 또는 오른쪽 스와이프하여 수행할 수 있는 동작을 정의하는 UIContextualAction 개체 집합이 포함되어 있음
+    private func makeSwipeActions(for indexPath: IndexPath?) -> UISwipeActionsConfiguration? {
+        guard let indexPath = indexPath, let id = dataSource.itemIdentifier(for: indexPath) else {
+            return nil
+        }
+        
+        // 작업의 제목을 만들고 사용자가 행을 스와이프하면 컬렉션 보기에 구성의 각 작업에 대한 버튼이 표시
+        // 버튼의 레이블은 작업의 제목
+        let deleteActionTitle = NSLocalizedString("Delete", comment: "Delete action title")
+        
+        // deleteAction이라는 UIContextualAction을 만듭니다. 조치가 데이터를 삭제하므로 파괴적 스타일을 지정
+        let deleteAction = UIContextualAction(style: .destructive, title: deleteActionTitle) {
+            [weak self] _, _, completion in
+            self?.deleteReminder(withId: id)
+            self?.updateSnapshot()
+            completion(false)
+        }
+        // 삭제 작업을 사용하여 새 스와이프 작업 구성 개체를 반환
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
 }
 
