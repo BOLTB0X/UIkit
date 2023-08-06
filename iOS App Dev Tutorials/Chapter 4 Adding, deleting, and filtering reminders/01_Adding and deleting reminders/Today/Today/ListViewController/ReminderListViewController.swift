@@ -33,6 +33,20 @@ class ReminderListViewController: UICollectionViewController {
                 using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
         
+        // didPressAddButton(_:) 선택기를 호출하는 추가 버튼에 대한 새 UIBarButtonItem
+        let addButton = UIBarButtonItem(
+                   barButtonSystemItem: .add, target: self, action: #selector(didPressAddButton(_:)))
+        // 버튼에 접근성 레이블을 추가
+        addButton.accessibilityLabel = NSLocalizedString(
+                    "Add reminder", comment: "Add button accessibility label")
+        // 내비게이션 항목의 오른쪽 막대 버튼 항목에 버튼을 할당
+        navigationItem.rightBarButtonItem = addButton
+        
+        // 앱이 iOS 16 이상에서 실행될 때 가용성 조건을 사용하여 navigationItem의 스타일을 설정
+        if #available(iOS 16, *) {
+            navigationItem.style = .navigator
+        }
+        
         updateSnapshot() // 메소드 호출
         
         collectionView.dataSource = dataSource
