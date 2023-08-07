@@ -66,6 +66,10 @@ class ReminderListViewController: UICollectionViewController {
         // selectedSegmentIndex는 선택된 세그먼트의 인덱스 번호
         listStyleSegmentedControl.selectedSegmentIndex = listStyle.rawValue
         
+        // 세그먼트화된 컨트롤에 대한 대상 개체 및 작업 메서드를 구성
+        listStyleSegmentedControl.addTarget(
+                    self, action: #selector(didChangeListStyle(_:)), for: .valueChanged)
+        
         // 내비게이션 항목의 titleView에 목록 스타일 분할 컨트롤을 할당
         navigationItem.titleView = listStyleSegmentedControl
         

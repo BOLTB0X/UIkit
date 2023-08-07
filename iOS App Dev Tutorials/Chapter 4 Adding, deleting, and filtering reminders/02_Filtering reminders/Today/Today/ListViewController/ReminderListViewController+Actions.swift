@@ -48,4 +48,13 @@ extension ReminderListViewController {
     @objc func didCancelAdd(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
     }
+    
+    // MARK: - didChangeListStyle
+    // didChangeListStyle이라는 함수를 만들고 @objc 속성을 적용
+    @objc func didChangeListStyle(_ sender: UISegmentedControl) {
+        /// 세그먼트화된 컨트롤의 선택된 세그먼트 인덱스를 사용하여 새 목록 스타일을 만듬
+        /// 열거형의 원시 값 이니셜라이저는 선택적 열거형 사례를 반환합니다. 열거 사례에서 세그먼트화된 제어 항목을 초기화했으므로 이 단계의 초기화 프로그램은 절대 실패 X
+        listStyle = ReminderListStyle(rawValue: sender.selectedSegmentIndex) ?? .today
+        updateSnapshot()
+    }
 }
