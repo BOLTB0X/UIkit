@@ -12,6 +12,17 @@ enum ReminderListStyle: Int {
     case future
     case all
     
+    var name: String {
+        switch self {
+        case .today:
+            return NSLocalizedString("Today", comment: "Today style name")
+        case .future:
+            return NSLocalizedString("Future", comment: "Future style name")
+        case .all:
+            return NSLocalizedString("All", comment: "All style name")
+        }
+    }
+    
     // MARK: - shouldInclude
     // Date 매개변수를 수락하고 Bool 값을 반환하는 shouldInclude 함수
     // ReminderListViewController는 사용자가 선택한 목록 스타일과 일치하는 기한이 있는 미리 알림만 표시

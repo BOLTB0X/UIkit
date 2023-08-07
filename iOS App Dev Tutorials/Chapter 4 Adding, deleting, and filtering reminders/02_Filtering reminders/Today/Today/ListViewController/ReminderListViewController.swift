@@ -28,6 +28,10 @@ class ReminderListViewController: UICollectionViewController {
         }
     }
     
+    let listStyleSegmentedControl = UISegmentedControl(items: [
+        ReminderListStyle.today.name, ReminderListStyle.future.name, ReminderListStyle.all.name
+    ])
+    
     // MARK: - viewDidLoad
     // 뷰 컨트롤러가 뷰 계층 구조를 메모리에 로드한 후 시스템은 viewDidLoad()를 호출
     override func viewDidLoad() {
@@ -56,6 +60,14 @@ class ReminderListViewController: UICollectionViewController {
                     "Add reminder", comment: "Add button accessibility label")
         // 내비게이션 항목의 오른쪽 막대 버튼 항목에 버튼을 할당
         navigationItem.rightBarButtonItem = addButton
+        
+        // listStyle.rawValue로 설정
+        // ListStyle은 원시 Int 값을 저장하므로 Swift는 각 경우에 0부터 시작하는 정수 값을 자동으로 할당
+        // selectedSegmentIndex는 선택된 세그먼트의 인덱스 번호
+        listStyleSegmentedControl.selectedSegmentIndex = listStyle.rawValue
+        
+        // 내비게이션 항목의 titleView에 목록 스타일 분할 컨트롤을 할당
+        navigationItem.titleView = listStyleSegmentedControl
         
         // 앱이 iOS 16 이상에서 실행될 때 가용성 조건을 사용하여 navigationItem의 스타일을 설정
         if #available(iOS 16, *) {
