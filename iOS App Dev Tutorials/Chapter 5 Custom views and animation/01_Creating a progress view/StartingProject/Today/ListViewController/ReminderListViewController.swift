@@ -8,6 +8,7 @@ class ReminderListViewController: UICollectionViewController {
     var dataSource: DataSource!
     var reminders: [Reminder] = Reminder.sampleData
     var listStyle: ReminderListStyle = .today
+    
     var filteredReminders: [Reminder] {
         return reminders.filter { listStyle.shouldInclude(date: $0.dueDate) }.sorted {
             $0.dueDate < $1.dueDate
@@ -19,9 +20,22 @@ class ReminderListViewController: UICollectionViewController {
     
     // add
     var headerView: ProgressHeaderView?
+    var progress: CGFloat { // progress라는 계산된 프로퍼티를 추가
+        // 각 미리 알림이 나타내는 FilteredReminders 배열의 비율을 계산하고 ChunkSize라는 로컬 상수에 값을 저장
+        let chunkSize = 1.0 / CGFloat(filteredReminders.count)
+        
+        // filterReminders에서 완료된 알림의 백분율을 계산하려면 reduce(_:_:)를 사용
+        let progress = filteredReminders.reduce(0.0) {
+            let chunk = $1.isComplete ? chunkSize : 0
+            return $0 + chunk
+        }
+        return progress
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // viewDidLoad()에서 컬렉션 뷰에 배경색을 할당
+        collectionView.backgroundColor = .todayGradientFutureBegin
 
         let listLayout = listLayout()
         collectionView.collectionViewLayout = listLayout
@@ -69,6 +83,25 @@ class ReminderListViewController: UICollectionViewController {
         let id = filteredReminders[indexPath.item].id
         pushDetailViewForReminder(withId: id)
         return false
+    }
+    
+    // MARK: - collectionView
+    /// collectionView(_:willDisplaySupplementaryView:forElementKind:at:) 함수를 재정의
+    /// 콜렉션 보기가 보충 view를 표시하려고 할 때 시스템이 이 메소드를 호출
+    override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView,
+        forElementKind elementKind: String, at indexPath: IndexPath
+    ) {
+        // 가드 문을 사용하여 요소 종류가 진행 보기인지 확인
+        // 유형 캐스팅 연산자 as? UICollectionReusableView 유형에서 ProgressHeaderView로 보기를 조건부로 다운캐스트
+        guard elementKind == ProgressHeaderView.elementKind,
+              let progressView = view as? ProgressHeaderView
+        else { // 그렇지 않으면 함수 호출 지점으로 돌아감
+            return
+        }
+        
+        // progressView의 진행률 프로퍼티를 업데이트
+        // 이 변경은 headerview의 didSet 관찰자를 트리거
+        progressView.progress = progress
     }
 
     func pushDetailViewForReminder(withId id: Reminder.ID) {

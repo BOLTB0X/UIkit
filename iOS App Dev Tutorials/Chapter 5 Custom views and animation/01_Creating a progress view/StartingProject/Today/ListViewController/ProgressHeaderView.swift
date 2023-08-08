@@ -18,6 +18,9 @@ class ProgressHeaderView: UICollectionReusableView {
     // 진행률 값이 변경될 때 하단 뷰의 높이 제한을 업데이트하는 진행률 속성에 관찰자를 추가
     var progress: CGFloat = 0 {
         didSet {
+            // 진행을 위한 didSet 관찰자에서 setNeedsLayout()을 호출함
+            // setNeedsLayout()을 호출하면 현재 레이아웃이 무효화되고 업데이트가 트리거됨
+            setNeedsLayout()
             /// 애니메이션 블록을 생성하기 위해 animate(withDuration:animations:)를 호출하여 보기에 대한 변경 사항을 애니메이션화
             /// 다음 뷰 애니메이션 클로저에서 layoutIfNeeded()를 호출
             heightConstraint?.constant = progress * bounds.height
@@ -36,10 +39,19 @@ class ProgressHeaderView: UICollectionReusableView {
     
     private var heightConstraint: NSLayoutConstraint? // add
     
+    // 완료율을 읽기 위해 지역화된 형식 문자열과 함께 valueFormat이라는 프로퍼티를 추가
+    private var valueFormat: String {
+        NSLocalizedString("%d percent", comment: "progress percentage value format")
+    }
+    
     // 일부 사용자 지정 초기화를 수행하고 super.init를 호출할 수 있도록 지정된 초기화 프로그램을 재정의
     override init(frame: CGRect) {
         super.init(frame: frame)
         prepareSubviews()
+        
+        isAccessibilityElement = true
+        accessibilityLabel = NSLocalizedString("Progress", comment: "Progress view accessibility label")
+        accessibilityTraits.update(with: .updatesFrequently)
     }
     
     required init?(coder: NSCoder) {
@@ -50,6 +62,12 @@ class ProgressHeaderView: UICollectionReusableView {
     // layoutSubviews()를 재정의하고 슈퍼뷰의 구현을 호출
     override func layoutSubviews() {
         super.layoutSubviews()
+        // layoutSubviews()에서 progress 값과 값 포맷터를 사용하여 AccessibilityValue에 새 문자열을 할당
+        accessibilityValue = String(format: valueFormat, Int(progress * 100.0))
+        
+        // layoutSubviews()에서 높이 제약 조건의 상수를 업데이트
+        heightConstraint?.constant = progress * bounds.height
+        
         /// 컨테이너 보기의 레이어에서 masksToBounds를 활성화하고 모서리 반경을 조정
         /// Core Animation은 컨테이너 뷰를 원형으로 만드는 CGRect 프레임에 클리핑 마스크를 적용
         containerView.layer.masksToBounds = true
