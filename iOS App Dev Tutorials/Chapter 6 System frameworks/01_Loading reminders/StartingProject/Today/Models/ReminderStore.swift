@@ -17,6 +17,34 @@ final class ReminderStore {
         EKEventStore.authorizationStatus(for: .reminder) == .authorized
     }
     
+    // MARK: - requestAccess
+    func requestAccess() async throws {
+        // 미리 알림 인증 상태를 저장하는 상수를 만듬
+        let status = EKEventStore.authorizationStatus(for: .reminder)
+        
+        switch status {
+        case .authorized: // 사용자가 미리 알림 데이터에 대한 액세스 권한을 부여한 경우 호출 함수로 실행을 되돌림
+            return
+        case .restricted: // 시스템에서 미리 알림 데이터에 대한 액세스를 제한하는 경우 오류가 발생
+            throw TodayError.accessRestricted
+            
+        case .notDetermined: // 사용자가 아직 결정을 내리지 않은 경우 사용자 데이터에 대한 액세스를 요청
+            let accessGranted = try await ekStore.requestAccess(to: .reminder)
+            guard accessGranted else {
+                throw TodayError.accessDenied
+            }
+            
+        case .denied: // 사용자가 미리 알림 데이터에 대한 액세스를 허용하지 않기로 결정한 경우 오류가 발생
+            throw TodayError.accessDenied
+            
+        // 기본 경우에 오류를 발생, 기본 키워드 앞에 @unknown 속성이 없어도 앱이 작동
+        // 그러나 특성을 추가하면 API의 향후 버전이 열거형에 새 사례를 추가하는 경우 경고하도록 컴파일러에 지시
+        @unknown default:
+            throw TodayError.unknown
+        }
+
+    }
+    
     // MARK: - readAll
     // Reminder의 배열을 반환하는 readAll이라는 async throws 함수
     func readAll() async throws -> [Reminder] {
