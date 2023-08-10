@@ -61,8 +61,14 @@ extension ReminderListViewController {
     }
 
     func updateReminder(_ reminder: Reminder) {
-        let index = reminders.indexOfReminder(withId: reminder.id)
-        reminders[index] = reminder
+        do {
+            try reminderStore.save(reminder)
+            let index = reminders.indexOfReminder(withId: reminder.id)
+            reminders[index] = reminder
+        } catch TodayError.accessDenied {
+        } catch {
+            showError(error)
+        }
     }
 
     func completeReminder(withId id: Reminder.ID) {
@@ -72,13 +78,32 @@ extension ReminderListViewController {
         updateSnapshot(reloading: [id])
     }
 
+    // MARK: - addReminder
     func addReminder(_ reminder: Reminder) {
-        reminders.append(reminder)
+        var reminder = reminder
+        do {
+            // 미리 알림을 저장하는 do 블록을 추가하고 해당 식별자를 새 상수에 저장
+            let idFromStore = try reminderStore.save(reminder)
+            // 미리 알림을 배열에 추가하기 전에 수신 식별자를 미리 알림 변수에 할당
+            reminder.id = idFromStore
+            reminders.append(reminder)
+        } catch TodayError.accessDenied { // 아무 작업도 수행하지 않는 TodayError.accessDenied에 대한 catch 블록을 추가
+            // 사용자가 미리 알림에 대한 액세스를 허용하지 않도록 선택한 경우 save(_:) 메서드에서 오류가 발생
+        } catch {
+            showError(error)
+        }
     }
 
     func deleteReminder(withId id: Reminder.ID) {
-        let index = reminders.indexOfReminder(withId: id)
-        reminders.remove(at: index)
+        do { // deleteReminder(withId:)에서 기존 코드 주위에 do 블록을 추가
+            // 해당 식별자가 있는 미리 알림을 제거
+            try reminderStore.remove(with: id)
+            let index = reminders.indexOfReminder(withId: id)
+            reminders.remove(at: index)
+        } catch TodayError.accessDenied { // TodayError.accessDenied에 대한 catch 블록을 추가
+        } catch {
+            showError(error)
+        }
     }
 
     func prepareReminderStore() {
