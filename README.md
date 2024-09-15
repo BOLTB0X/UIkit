@@ -1,4 +1,4 @@
-# UIkit: UIKit 학습을 위한 낙서장 같은 레파지토리
+# UIKit 학습을 위한 낙서장 같은 레파지토리
 
 ![UIkit](https://velog.velcdn.com/images/shstl98/post/862abfd5-6c0d-441f-bb74-e91c8adfb7c0/UIKit.jpeg)
 
@@ -6,9 +6,10 @@ SwiftUI로 개발을 진행하다보면 markdown, rx 등과 같이 UIKit 형식�
 
 ### self
 
-[iOS 공식 Tutorials 학습 레파지토리](https://github.com/BOLTB0X/UIkit/tree/main/iOS%20App%20Dev%20Tutorials)
+- [iOS 공식 Tutorials 학습 레파지토리](https://github.com/BOLTB0X/UIkit/tree/main/iOS%20App%20Dev%20Tutorials)
+  <br/>
 
-[창고](https://github.com/BOLTB0X/UIkit/tree/main/self-taught%20graffiti)
+- [창고](https://github.com/BOLTB0X/UIkit/tree/main/self-taught%20graffiti)
 
 ### study
 
