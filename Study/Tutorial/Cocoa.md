@@ -12,6 +12,7 @@
 
 <p align="center">
    <img src = "https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/OSX_Technology_Overview/art/osx_architecture-cocoa_2x.png">
+   <br/>
    이미지 출처: developer apple(CocoaApplicationLayer)
 </p>
 
@@ -36,6 +37,7 @@
 
 <p align="center">
    <img src = "https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CocoaFundamentals/Art/architecture_stack.jpg">
+   <br/>
    이미지 출처: developer apple(Cocoa in the architecture)
 </p>
 

@@ -1,7 +1,7 @@
 # UI structure
 
 <p align="center">
-   <img src = "https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/OSX_Technology_Overview/art/osx_architecture-cocoa_2x.png">
+   <img src = "https://github.com/BOLTB0X/UIkit/blob/main/Study/UI%20structure/UI%EA%B5%AC%EC%A1%B0.png?raw=true">
 </p>
 
 ## UIScreen
